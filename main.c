@@ -6,6 +6,8 @@
 #include <semaphore.h>
 #include <pthread.h>
 
+#define MAX_NUM_THREADS 128
+
 typedef struct Lightswitch_
 {
     int counter;
@@ -19,10 +21,6 @@ sem_t noReaders;
 sem_t noWriters;
 
 Lightswitch initLightswitch(int counter, int initSemVal);
-void lockLightswitch(Lightswitch *light, sem_t *semaphore);
-void unlockLightswitch(Lightswitch *light, sem_t *semaphore);
-void myRead(int threadNum);
-void myWrite(int threadNum);
 void *reader(void *threadNum);
 void *writer(void *threadNum);
 
@@ -41,10 +39,15 @@ int main(int argc, char *argv[])
     sem_init(&noWriters, 0, 1);
 
     pthread_t *threads = NULL;
-    char scenarioStr[128];
+    char scenarioStr[MAX_NUM_THREADS + 1];
     int i = 0, scenarioNum = 1, strLen = 0, *threadNums = NULL;
     while (fscanf(scenarios, "%s ", scenarioStr) != EOF) {
         strLen = strlen(scenarioStr);
+
+        if (strLen > MAX_NUM_THREADS) {
+            fprintf(stderr, "Error: Scenario creates too many threads. Max: %d", MAX_NUM_THREADS);
+        }
+
         threads = malloc(strLen * sizeof(pthread_t));
         threadNums = calloc(strLen, sizeof(int));
 
@@ -57,7 +60,7 @@ int main(int argc, char *argv[])
         }
 
         printf("\nSCENARIO %d: %s\n", scenarioNum++, scenarioStr);
-        
+
         for (i = 0; i < strLen; i++) {
             threadNums[i] = i;
             if (scenarioStr[i] == 'W' || scenarioStr[i] == 'w') {

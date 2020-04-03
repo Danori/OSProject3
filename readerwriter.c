@@ -14,6 +14,16 @@ extern sem_t noWriters;
 extern Lightswitch readSwitch;
 extern Lightswitch writeSwitch;
 
+void wasteTime()
+{
+    int i, j, x = 0, randNum = rand() % 10000;
+    for (i = 0; i < randNum; i++) {
+        for (j = 0; j < randNum; j++) {
+            x = i * j;
+        }
+    }
+}
+
 Lightswitch initLightswitch(int counter, int initSemVal)
 {
     Lightswitch light;
@@ -50,30 +60,16 @@ void unlockLightswitch(Lightswitch *light, sem_t *semaphore)
 
 void myRead(int threadNum)
 {
-    printf("%d beginning read ...\n", threadNum);
-
-    int i, j, x = 0, randNum = rand() % 10000;
-    for (i = 0; i < randNum; i++) {
-        for (j = 0; j < randNum; j++) {
-            x = i * j;
-        }
-    }
-
-    printf("%d complete read ...\n", threadNum);
+    printf("%-4d beginning read ...\n", threadNum);
+    wasteTime();
+    printf("%-4d complete read ...\n", threadNum);
 }
 
 void myWrite(int threadNum)
 {
-    printf("%d beginning write ...\n", threadNum);
-
-    int i, j, x = 0, randNum = rand() % 20000;
-    for (i = 0; i < randNum; i++) {
-        for (j = 0; j < randNum; j++) {
-            x = i * j;
-        }
-    }
-
-    printf("%d complete write ...\n", threadNum);
+    printf("%-4d beginning write ...\n", threadNum);
+    wasteTime();
+    printf("%-4d complete write  ...\n", threadNum);
 }
 
 void *reader(void *threadNum)
