@@ -1,9 +1,31 @@
-Simply extract the contents to whatever directory, navigate to the directory, and run the command:
+Simply extract the contents to whatever directory, navigate to the directory,
+and run the command:
 
 make
 
-This will compile the page simulation program.
+This will compile the reader / writer concurrency program into an executable
+named rwmain. Ensure either the given scenarios.txt, or one you have created,
+is in the same directory as the executable. The format of scenarios.txt is
+as follows:
 
-Run the program with the following parameters:
+- Each line may contain up to 128 'R' or 'W' characters.
+- The order of the R's and W's determines the order the threads will be
+  created, from left to right.
+- The file may contain however many thread scenarios you wish to run.
 
-./memsim <tracefile> <numframes> <rdm|lru|fifo|vms> <debug|quiet>
+Below is an example format of a scenarios.txt:
+
+WWWWWWWWWWWWWWW
+RRRRRRRRRRRRRRR
+WRRRRRRRRRR
+RRRRRRRWRRRRRRR
+RRRRRRRRRRRRRRW
+RRRRWRRWRRRWR
+RRWRWRWRRRRRWRR
+RRRRWRRRWRRRRWW
+WRRRRR
+WWWWWRRRRRRRRRR
+
+Run the program with:
+
+./rwmain

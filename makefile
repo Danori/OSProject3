@@ -1,4 +1,4 @@
-all: memsim
+all: rwmain
 
-memsim:
-	gcc -o memsim main.c
+rwmain:
+	gcc -o rwmain main.c readerwriter.c -pthread
