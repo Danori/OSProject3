@@ -24,7 +24,7 @@ Lightswitch initLightswitch();
 void *reader(void *threadNum);
 void *writer(void *threadNum);
 
-int main(int argc, char *argv[])
+int main()
 {
     srand(time(NULL));
 
