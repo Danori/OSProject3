@@ -16,7 +16,7 @@ extern Lightswitch writeSwitch;
 
 void wasteTime()
 {
-    int i, j, x = 0, randNum = rand() % 10000;
+    int i, j, x, randNum = rand() % 10000;
     for (i = 0; i < randNum; i++) {
         for (j = 0; j < randNum; j++) {
             x = i * j;
@@ -24,11 +24,11 @@ void wasteTime()
     }
 }
 
-Lightswitch initLightswitch(int counter, int initSemVal)
+Lightswitch initLightswitch()
 {
     Lightswitch light;
 
-    light.counter = counter;
+    light.counter = 0;
     sem_init(&light.mutex, 0, 1);
 
     return light;
@@ -60,9 +60,9 @@ void unlockLightswitch(Lightswitch *light, sem_t *semaphore)
 
 void myRead(int threadNum)
 {
-    printf("%-4d beginning read ...\n", threadNum);
+    printf("%-4d beginning read  ...\n", threadNum);
     wasteTime();
-    printf("%-4d complete read ...\n", threadNum);
+    printf("%-4d complete read   ...\n", threadNum);
 }
 
 void myWrite(int threadNum)

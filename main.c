@@ -20,7 +20,7 @@ Lightswitch writeSwitch;
 sem_t noReaders;
 sem_t noWriters;
 
-Lightswitch initLightswitch(int counter, int initSemVal);
+Lightswitch initLightswitch();
 void *reader(void *threadNum);
 void *writer(void *threadNum);
 
@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Error: scenarios.txt failed to open.\n");
     }
 
-    readSwitch = initLightswitch(0, 1);
-    writeSwitch = initLightswitch(0, 1);
+    readSwitch = initLightswitch();
+    writeSwitch = initLightswitch();
     sem_init(&noReaders, 0, 1);
     sem_init(&noWriters, 0, 1);
 
@@ -45,7 +45,9 @@ int main(int argc, char *argv[])
         strLen = strlen(scenarioStr);
 
         if (strLen > MAX_NUM_THREADS) {
-            fprintf(stderr, "Error: Scenario creates too many threads. Max: %d", MAX_NUM_THREADS);
+            fprintf(stderr, "\nError: SCENARIO %d creates too many threads. Max: %d\n", 
+                scenarioNum++, MAX_NUM_THREADS);
+            continue;
         }
 
         threads = malloc(strLen * sizeof(pthread_t));
